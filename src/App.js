@@ -2,17 +2,11 @@ import React from 'react';
 
 import Tour from './components/Tour.js';
 import NoToursScreen from './components/NoToursScreen.js';
-
-import toursData from './resources/tours.json';
+import LoadingScreen from './components/LoadingScreen.js';
 
 export default function App() {
-  const [tours, setTours] = React.useState(
-    toursData.map(tour => ({
-      ...tour,
-      isVisible: true,
-      infoExpanded: false
-    }))
-  );
+  const [tours, setTours] = React.useState([]);
+  const [fetchData, setFetchData] = React.useState(0);
 
   const tourElements = tours.filter(tour => tour.isVisible).map(tour =>
     <Tour
@@ -34,34 +28,51 @@ export default function App() {
     ));
   }
 
-  function showAllTours() {
-    setTours((prevTours) => prevTours.map(tour => 
-      ({ ...tour, isVisible: true })));
-  }
-
   function toggleTourExpanded(id) {
     setTours(prevTours => prevTours.map(tour => 
       tour.id === id ? { ...tour, infoExpanded: !tour.infoExpanded } : tour ));
   }
 
+  function requestNewData() {
+    setTours([]);
+    setFetchData(prev => !prev);
+  }
+
+  React.useEffect(() => {
+    fetch('https://course-api.com/react-tours-project')
+      .then(response => response.json())
+      .then(json => 
+        setTours(json.map(tour => ({
+          ...tour,
+          isVisible: true,
+          infoExpanded: false
+        })))
+      );
+  }, [fetchData]);
+
+
+  let websiteContent = <LoadingScreen/>;
+
+  if(tourElements.length)
+    websiteContent = 
+      <>
+        <h1 className="website__heading">
+          Found {tourElements.length} tour{tourElements.length > 1 && 's'} for you!
+        </h1>
+
+        {tourElements}
+      </>;
+    else if(tours.length)
+      websiteContent = 
+        <NoToursScreen 
+          requestNewTours={requestNewData}
+        />
+
+
   return (
     <div className="website">
       
-      {
-        tourElements.length ? (
-          <>
-            <h1 className="website__header">
-                  Found {tourElements.length} tour{tourElements.length > 1 && 's'} for you!
-            </h1>
-        
-            {tourElements}
-          </>
-        )
-        :
-          <NoToursScreen
-            showAllTours={showAllTours}
-          />
-      }
+      {websiteContent}
 
     </div>
   );
