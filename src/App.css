@@ -1,0 +1,93 @@
+body {
+  margin: 0;
+  background-color: #EFF5FB;
+  font-family: sans-serif;
+  color: #111;
+  line-height: 150%;
+}
+
+button:hover {
+  cursor: pointer;
+}
+
+.expand-collapse-button {
+  margin-left: 12px;
+
+  color: rgb(9, 118, 227);
+  border: none;
+  background-color: transparent;
+  font-size: 1em;
+}
+
+.website {
+  padding: 16px;
+}
+
+.website__header {
+  text-align: center;
+}
+
+.tour {
+  margin: 32px auto;
+  max-width: 500px;
+  
+  background-color: #fff;
+  border-radius: 10px;
+}
+
+.tour__text-part {
+  padding: 24px;
+}
+
+.tour__image {
+  display: block;
+
+  width: 100%;
+  height: 300px;
+
+  border-radius: 10px 10px 0 0;
+
+  object-fit: cover;
+  object-position: center;
+}
+
+.tour__heading-and-price {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px 24px;
+  flex-wrap: wrap;
+}
+
+.tour__heading {
+  margin: 0;
+
+  font-size: 16px;
+}
+
+.tour__price {
+  padding: 0 8px;
+
+  color: rgb(9, 118, 227);
+  background-color: rgba(9, 118, 227, 0.2);
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.tour__info {
+  margin: 24px 0;
+  
+  font-size: 14px;
+}
+
+.tour__button {
+  display: block;
+  padding: 4px 24px;
+  margin: auto;
+
+  background-color: transparent;
+  border: 2px solid rgb(235, 26, 92);
+  color: rgb(235, 26, 92);
+  border-radius: 5px;
+  font-size: 14px;
+}
