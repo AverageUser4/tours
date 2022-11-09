@@ -2,7 +2,7 @@ import React from 'react';
 
 
 export default function Tour(props) {
-  const characterCap = 400;
+  const characterCap = 250;
   const capReached = props.info.length > characterCap;
 
 
@@ -24,7 +24,6 @@ export default function Tour(props) {
 
         </div>
 
-
         <p 
           className="tour__info"
         >
@@ -35,7 +34,7 @@ export default function Tour(props) {
               props.info.slice(0, characterCap)
           }
 
-          {capReached && !props.infoExpanded && '...'}
+          {capReached && !props.infoExpanded && '... '}
 
           {
             capReached && 
@@ -48,7 +47,7 @@ export default function Tour(props) {
 
         <button 
           className="tour__button"
-          onClick={() => props.hideTour(props.id)}  
+          onClick={props.hideTour}  
         >Not Interested</button>
 
       </div>

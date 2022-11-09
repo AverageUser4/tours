@@ -1,30 +1,21 @@
 import React from 'react';
 
-import Tour from './components/Tour.js';
+import Tours from './components/Tours.js';
 import NoToursScreen from './components/NoToursScreen.js';
 import LoadingScreen from './components/LoadingScreen.js';
+import ErrorScreen from './components/ErrorScreen.js';
+import GarbageCan from './components/GarbageCan.js';
 
 export default function App() {
   const [tours, setTours] = React.useState([]);
-  const [fetchData, setFetchData] = React.useState(0);
 
-  const tourElements = tours.filter(tour => tour.isVisible).map(tour =>
-    <Tour
-      key={tour.id}
-      id={tour.id}
-      src={tour.image}
-      name={tour.name}
-      price={tour.price}
-      info={tour.info}
-      hideTour={hideTour}
-      infoExpanded={tour.infoExpanded}
-      toggleTourExpanded={toggleTourExpanded.bind(null, tour.id)}
-    />  
-  );
+  function areThereVisibleTours() {
+    return tours.some(tour => tour.isVisible);
+  }
 
-  function hideTour(id) {
+  function toggleToursVisibility(id) {
     setTours((prevTours) => prevTours.map(tour =>
-      tour.id === id ? { ...tour, isVisible: false, infoExpanded: false } : tour
+      tour.id === id ? { ...tour, isVisible: !tour.isVisible, infoExpanded: false } : tour
     ));
   }
 
@@ -33,46 +24,78 @@ export default function App() {
       tour.id === id ? { ...tour, infoExpanded: !tour.infoExpanded } : tour ));
   }
 
-  function requestNewData() {
+  function fetchTours() {
     setTours([]);
-    setFetchData(prev => !prev);
+
+    fetch('https://course-api.com/react-tours-project')
+    .then(response => response.json())
+    .then(json => 
+      setTours(json.map(tour => ({
+        ...tour,
+        isVisible: true,
+        infoExpanded: false
+      })))
+    )
+    .catch(error => {
+      console.error(error);
+      setTours([{ isError: true, message: error.message }]);
+    });
   }
 
   React.useEffect(() => {
-    fetch('https://course-api.com/react-tours-project')
-      .then(response => response.json())
-      .then(json => 
-        setTours(json.map(tour => ({
-          ...tour,
-          isVisible: true,
-          infoExpanded: false
-        })))
-      );
-  }, [fetchData]);
+    fetchTours();
+  }, []);
+
+
+  let whatIsShown = 'LoadingScreen';
+  if(tours?.[0]?.isError)
+    whatIsShown = 'ErrorScreen';
+  else if(areThereVisibleTours())
+    whatIsShown = 'Tours';
+  else if(tours.length)
+    whatIsShown = 'NoToursScreen';
 
 
   let websiteContent = <LoadingScreen/>;
 
-  if(tourElements.length)
-    websiteContent = 
-      <>
-        <h1 className="website__heading">
-          Found {tourElements.length} tour{tourElements.length > 1 && 's'} for you!
-        </h1>
+  switch(whatIsShown) {
+    case 'ErrorScreen':
+      websiteContent = 
+        <ErrorScreen
+          error={tours[0].message}
+          tryAgain={fetchTours}
+        />;
+      break;
 
-        {tourElements}
-      </>;
-    else if(tours.length)
+    case 'Tours':
+      websiteContent = 
+      <Tours
+        tours={tours}      
+        hideTour={toggleToursVisibility}
+        toggleTourExpanded={toggleTourExpanded}
+      />;
+      break;
+
+    case 'NoToursScreen':
       websiteContent = 
         <NoToursScreen 
-          requestNewTours={requestNewData}
-        />
-
+          requestNewTours={fetchTours}
+        />;
+      break;
+  }
 
   return (
     <div className="website">
       
       {websiteContent}
+
+      {
+        (whatIsShown === 'Tours' || whatIsShown === 'NoToursScreen') && 
+        <GarbageCan
+          tours={tours}
+          restoreTour={toggleToursVisibility}
+        />
+      }
 
     </div>
   );

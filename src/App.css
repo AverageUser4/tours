@@ -10,13 +10,42 @@ button:hover {
   cursor: pointer;
 }
 
+.garbage-can {
+  margin: 24px 0 0;
+  padding: 16px;
+
+  background-color: burlywood;
+}
+
+.garbage-can__list {
+  margin: 0;
+  padding: 0;
+  
+  list-style: none;
+}
+
+.garbage-can__item {
+  padding: 8px;
+  margin: 12px 0;
+
+  border: 2px dashed black;
+}
+
 .expand-collapse-button {
-  margin-left: 12px;
+  padding: 0;
 
   color: rgb(9, 118, 227);
   border: none;
   background-color: transparent;
   font-size: 1em;
+}
+
+.no-margin {
+  margin: 0;
+}
+
+.error {
+  color: red;
 }
 
 .website {
@@ -90,4 +119,12 @@ button:hover {
   color: rgb(235, 26, 92);
   border-radius: 5px;
   font-size: 14px;
+}
+
+.tour__button--type-2 {
+  margin: 0;
+
+  color: black;
+  border-color: black;
+  background-color: wheat;
 }
