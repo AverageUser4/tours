@@ -5,6 +5,10 @@ export default function Tour(props) {
   const characterCap = 250;
   const capReached = props.info.length > characterCap;
 
+  let info = props.infoExpanded ? props.info : 
+    props.info.slice(0, characterCap);
+  info += capReached && props.infoExpanded ? ' ' : '';
+  info += capReached && !props.infoExpanded ? '... ' : '';
 
   return (
     <article className="tour">
@@ -27,21 +31,16 @@ export default function Tour(props) {
         <p 
           className="tour__info"
         >
-          {
-            props.infoExpanded ?
-              props.info
-            :
-              props.info.slice(0, characterCap)
-          }
-
-          {capReached && !props.infoExpanded && '... '}
+          {info}
 
           {
             capReached && 
-            <ExColButton
-              expanded={props.infoExpanded}
-              handleClick={props.toggleTourExpanded}
-            />
+            <button 
+              className="expand-collapse-button"
+              onClick={props.toggleTourExpanded}
+            >
+              {props.infoExpanded ? 'Show less' : 'Show more'}
+            </button>
           }
         </p>
 
@@ -54,16 +53,4 @@ export default function Tour(props) {
 
     </article>
   );
-}
-
-
-function ExColButton(props) {
-  return (
-    <button 
-      className="expand-collapse-button"
-      onClick={props.handleClick}
-    >
-      {props.expanded ? 'Show less' : 'Show more'}
-    </button>
-  )
 }

@@ -54,6 +54,7 @@ button:hover {
 
 .website__heading {
   text-align: center;
+  line-height: 150%;
 }
 
 .tour {
@@ -84,13 +85,14 @@ button:hover {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: 8px 24px;
+  gap: 8px;
   flex-wrap: wrap;
 }
 
 .tour__heading {
   margin: 0;
 
+  line-height: 150%;
   font-size: 16px;
 }
 

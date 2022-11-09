@@ -19,7 +19,7 @@ export default function GarbageCan(props) {
       {
         garbageElements.length > 0 ?
           <>
-            <p>You have {garbageElements.length} garbage elements in your Garbage Can!</p>
+            <p>You have {garbageElements.length} garbage element{garbageElements.length > 1 && 's'} in your Garbage Can!</p>
 
             <button 
               className="tour__button tour__button--type-2"

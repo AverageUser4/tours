@@ -13,7 +13,7 @@ export default function App() {
     return tours.some(tour => tour.isVisible);
   }
 
-  function toggleToursVisibility(id) {
+  function toggleTourVisible(id) {
     setTours((prevTours) => prevTours.map(tour =>
       tour.id === id ? { ...tour, isVisible: !tour.isVisible, infoExpanded: false } : tour
     ));
@@ -71,7 +71,7 @@ export default function App() {
       websiteContent = 
       <Tours
         tours={tours}      
-        hideTour={toggleToursVisibility}
+        hideTour={toggleTourVisible}
         toggleTourExpanded={toggleTourExpanded}
       />;
       break;
@@ -93,7 +93,7 @@ export default function App() {
         (whatIsShown === 'Tours' || whatIsShown === 'NoToursScreen') && 
         <GarbageCan
           tours={tours}
-          restoreTour={toggleToursVisibility}
+          restoreTour={toggleTourVisible}
         />
       }
 
